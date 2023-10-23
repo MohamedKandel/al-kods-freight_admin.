@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">شهادات القدس فريت للمديرين</string>
+    <string name="register">إنشاء حساب مديرين</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="display">اسم المدير</string>
+    <string name="loading">جارِ التحميل برجاء الانتظار</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="access">رمز الوصول</string>
+    <string name="cert_num">رقم الشهادة</string>
+    <string name="cert_date">تاريخ الشهادة</string>
+    <string name="comp_name">اسم الشركة</string>
+    <string name="comp_num">رقم فاتورة الشركة</string>
+    <string name="country_name">دولة التصدير</string>
+    <string name="trans_name">ميناء التصدير</string>
+    <string name="model_13">تم اخذ نموذج 13</string>
+    <string name="build_fact">تم عمل المنشأ</string>
+    <string name="offers">العروض على الشهادة</string>
+    <string name="download">تحميل الملفات المرفقة</string>
+    <string name="closed">عذرا تم انتهاء الفترة المجانية المسموح بها لتجربة التطبيق</string>
+    <string name="search">بحث</string>
+</resources>
