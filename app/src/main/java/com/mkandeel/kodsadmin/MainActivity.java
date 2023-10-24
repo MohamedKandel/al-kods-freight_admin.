@@ -62,13 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mainFun() {
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        dialog = new LoadingDialog(this);
-        mAuth = FirebaseAuth.getInstance();
         connection = DBConnection.getInstance(this);
-
         String user = connection.getUserID();
         //FirebaseUser user = mAuth.getCurrentUser();
         if (!user.equals("")) {
@@ -76,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
+            binding = ActivityMainBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+
+            dialog = new LoadingDialog(this);
+            mAuth = FirebaseAuth.getInstance();
 
             binding.btnReg.setOnClickListener(new View.OnClickListener() {
                 @Override

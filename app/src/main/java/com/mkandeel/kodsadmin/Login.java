@@ -78,10 +78,13 @@ public class Login extends AppCompatActivity {
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {
-
+                                                dialog.closeDialog();
                                             }
                                         });
 
+                                    } else {
+                                        dialog.closeDialog();
+                                        Toast.makeText(Login.this, "خطأ في اسم المستخدم او كلمة المرور", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
