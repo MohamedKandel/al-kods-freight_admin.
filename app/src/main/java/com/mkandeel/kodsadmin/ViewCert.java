@@ -113,6 +113,7 @@ public class ViewCert extends AppCompatActivity {
                     }
                     setAdapter();
                 } else {
+                    dialog.closeDialog();
                     Toast.makeText(ViewCert.this, "لا يوجد بيانات", Toast.LENGTH_SHORT).show();
                 }
             }
