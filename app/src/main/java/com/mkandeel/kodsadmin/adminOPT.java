@@ -2,13 +2,17 @@ package com.mkandeel.kodsadmin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -26,6 +30,7 @@ import com.mkandeel.kodsadmin.databinding.ActivityAdminOptBinding;
 import com.mkandeel.kodsadmin.models.Model;
 import com.mkandeel.kodsadmin.rvAdapter.optAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +77,7 @@ public class adminOPT extends AppCompatActivity {
             list = new ArrayList<>();
             list.add(new Model("مستخدمين التطبيق", R.drawable.people));
             list.add(new Model("جميع الشهادات", R.drawable.view_all));
+//            list.add(new Model("عرض الشهادات المُحملة",R.drawable.downloaded));
 
             listener = new ClickListener() {
                 @Override
@@ -87,6 +93,20 @@ public class adminOPT extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                             break;
+//                        case 2:
+                            //File file = new File(Environment.DIRECTORY_DOCUMENTS);
+                            //String path = getApplicationContext()
+                            //        .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+//                            String path = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+//                                    .getAbsolutePath();
+
+//                            Log.e("Paht",path);
+//                            Log.e("Paht",Tools.ListFiles(path)+"");
+//                            Uri uri = Uri.parse(path);
+//                            intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                            intent.setDataAndType(uri, "*/*");
+//                            startActivity(intent);
+//                            break;
                     }
                 }
             };

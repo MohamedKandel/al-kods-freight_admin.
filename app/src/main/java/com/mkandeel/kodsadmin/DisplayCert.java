@@ -83,20 +83,24 @@ public class DisplayCert extends AppCompatActivity {
                         binding.btnDownload.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                                        PackageManager.PERMISSION_GRANTED) {
-                                    myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                                     DownloadFiles(certificate.getList(), cert_num);
                                 } else {
-                                    requestStoragePermission();
+                                    if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                                            PackageManager.PERMISSION_GRANTED) {
+                                        myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                                        DownloadFiles(certificate.getList(), cert_num);
+                                    } else {
+                                        requestStoragePermission();
+                                    }
                                 }
                             }
                         });
 
                     }
                 } else {
-
+                    Toast.makeText(DisplayCert.this, "لا يوجد ملفات لهذه الشهادة", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -108,13 +112,32 @@ public class DisplayCert extends AppCompatActivity {
     }
 
     private void DownloadFiles(List<String> list,String txt) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("مسار التحميل");
+        String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+        builder.setMessage("سيتم تحميل الملفات في المسار التالي\n"+ path);
+        builder.setPositiveButton("حسنًا", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
         for (String url:list) {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
             request.setDescription("جارِ تحميل ملفات الشهادة");
             request.setTitle("الشهادة رقم "+txt);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+                    if (Tools.getNotificationValueFromSP(this)) {
+                        request.allowScanningByMediaScanner();
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
+                    }
+                } else {
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
+                }
             }
             request.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOCUMENTS+"/"+txt,
                     System.currentTimeMillis()+"."+getExtn(url));
@@ -127,8 +150,17 @@ public class DisplayCert extends AppCompatActivity {
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             // your code
-            Toast.makeText(ctxt, "تم تحميل الملف بنجاح", Toast.LENGTH_SHORT)
-                    .show();
+            /*String action = intent.getAction();
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                Toast.makeText(ctxt, "تم تحميل الملفات بنجاح", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (DownloadManager.ACTION_NOTIFICATION_CLICKED.equals(action)) {
+                /*Intent dm = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+                dm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(dm);*/
+                /*Toast.makeText(ctxt, "clicked", Toast.LENGTH_SHORT).show();
+            }*/
+            //Toast.makeText(ctxt, intent.getAction(), Toast.LENGTH_SHORT).show();
         }
     };
 
