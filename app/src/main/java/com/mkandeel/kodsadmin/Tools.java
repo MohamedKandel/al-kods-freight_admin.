@@ -2,6 +2,7 @@ package com.mkandeel.kodsadmin;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -196,5 +198,10 @@ public class Tools {
             return list;
         }
         return null;
+    }
+    public static String getFileExtn(Context context,Uri uri) {
+        ContentResolver cr = context.getContentResolver();
+        MimeTypeMap mtm = MimeTypeMap.getSingleton();
+        return mtm.getExtensionFromMimeType(cr.getType(uri));
     }
 }

@@ -19,4 +19,16 @@
     <string name="download">تحميل الملفات المرفقة</string>
     <string name="closed">عذرا تم انتهاء الفترة المجانية المسموح بها لتجربة التطبيق</string>
     <string name="search">بحث</string>
+    <string name="txt_del">حضف الملفات المرفقة للايصال</string>
+    <string name="txt_prev">السابق</string>
+    <string name="txt_next">التالي</string>
+    <string name="Add_new">تسجيل شهادة جديدة</string>
+    <string name="txt_move">رفع الملفات</string>
+    <string name="txt_upload">رفع الشهادة بدون ملفات</string>
+    <string name="txt_gomrok">ايصال جمرك</string>
+    <string name="txt_floor">ايصال ارضيات</string>
+    <string name="txt_hayaa">ايصال هيئة</string>
+    <string name="txt_food">ايصال سلامة غذاء</string>
+    <string name="txt_agri">ايصال زراعة</string>
+    <string name="txt_fact">ايصال منشأ</string>
 </resources>

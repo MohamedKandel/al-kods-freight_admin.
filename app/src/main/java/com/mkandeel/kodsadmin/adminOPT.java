@@ -34,7 +34,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class adminOPT extends AppCompatActivity {
+public class adminOPT extends AppCompatActivity{
 
     private ActivityAdminOptBinding binding;
     private optAdapter adapter;
@@ -75,8 +75,9 @@ public class adminOPT extends AppCompatActivity {
             }
             //////////////////////////////////////////////////////////////
             list = new ArrayList<>();
-            list.add(new Model("مستخدمين التطبيق", R.drawable.people));
+            list.add(new Model("إضافة شهادة جديدة", R.drawable.add));
             list.add(new Model("جميع الشهادات", R.drawable.view_all));
+            list.add(new Model("مستخدمين التطبيق", R.drawable.people));
 //            list.add(new Model("عرض الشهادات المُحملة",R.drawable.downloaded));
 
             listener = new ClickListener() {
@@ -84,12 +85,17 @@ public class adminOPT extends AppCompatActivity {
                 public void click(int index) {
                     switch (index) {
                         case 0:
-                            Intent intent = new Intent(adminOPT.this, ViewUsers.class);
+                            Intent intent = new Intent(adminOPT.this, AddCert.class);
                             startActivity(intent);
                             finish();
                             break;
                         case 1:
                             intent = new Intent(adminOPT.this, ViewCert.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case 2:
+                            intent = new Intent(adminOPT.this, ViewUsers.class);
                             startActivity(intent);
                             finish();
                             break;

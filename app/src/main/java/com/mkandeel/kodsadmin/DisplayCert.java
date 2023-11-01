@@ -84,6 +84,7 @@ public class DisplayCert extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                                     DownloadFiles(certificate.getList(), cert_num);
                                 } else {
                                     if (ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -150,16 +151,16 @@ public class DisplayCert extends AppCompatActivity {
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             // your code
-            /*String action = intent.getAction();
+            String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 Toast.makeText(ctxt, "تم تحميل الملفات بنجاح", Toast.LENGTH_SHORT)
                         .show();
             } else if (DownloadManager.ACTION_NOTIFICATION_CLICKED.equals(action)) {
-                /*Intent dm = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+                Intent dm = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
                 dm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(dm);*/
-                /*Toast.makeText(ctxt, "clicked", Toast.LENGTH_SHORT).show();
-            }*/
+                startActivity(dm);
+                //Toast.makeText(ctxt, "clicked", Toast.LENGTH_SHORT).show();
+            }
             //Toast.makeText(ctxt, intent.getAction(), Toast.LENGTH_SHORT).show();
         }
     };
