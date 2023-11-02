@@ -83,19 +83,6 @@ public class DisplayCert extends AppCompatActivity {
                         binding.btnDownload.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                    myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                                    DownloadFiles(certificate.getList(), cert_num);
-                                } else {
-                                    if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                                            PackageManager.PERMISSION_GRANTED) {
-                                        myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                                        DownloadFiles(certificate.getList(), cert_num);
-                                    } else {
-                                        requestStoragePermission();
-                                    }
-                                }*/
                                 Intent intent = new Intent(DisplayCert.this,DownloadFiles.class);
                                 intent.putExtra("cert_num",cert_num);
                                 startActivity(intent);
@@ -116,12 +103,6 @@ public class DisplayCert extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -129,7 +110,4 @@ public class DisplayCert extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
-
 }

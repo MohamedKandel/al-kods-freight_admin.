@@ -2,8 +2,10 @@ package com.mkandeel.kodsadmin.rvAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +23,7 @@ public class showAdapter extends RecyclerView.Adapter<certHolder> {
     private ClickListener listener;
     private ItemClicked clicked;
 
-    public showAdapter(List<customModel> list,Context context) {
+    public showAdapter(List<customModel> list, Context context) {
         this.list = list;
         this.context = context;
 //        this.clicked = clicked;
@@ -33,7 +35,7 @@ public class showAdapter extends RecyclerView.Adapter<certHolder> {
     public certHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.show_cert,parent,false);
+        View view = inflater.inflate(R.layout.show_cert, parent, false);
         return new certHolder(view);
     }
 
@@ -54,6 +56,26 @@ public class showAdapter extends RecyclerView.Adapter<certHolder> {
                 }
             }
         });
+
+        holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.inflate(R.menu.popup);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (clicked != null) {
+                            clicked.onItemLongClickListener(holder.txt_num.getText().toString(),
+                                    item.getItemId(), index);
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+                return true;
+            }
+        });
     }
 
     public void setOnClickListener(ItemClicked clicked) {
@@ -64,7 +86,10 @@ public class showAdapter extends RecyclerView.Adapter<certHolder> {
     public int getItemCount() {
         return list.size();
     }
+
     public interface ItemClicked {
-        void onItemClickListener(String txt,int position);
+        void onItemClickListener(String txt, int position);
+
+        void onItemLongClickListener(String txt, int itemId, int position);
     }
 }
