@@ -242,7 +242,6 @@ public class AddCert extends AppCompatActivity {
                                                             Toast.makeText(AddCert.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
-
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -256,5 +255,13 @@ public class AddCert extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AddCert.this,adminOPT.class);
+        startActivity(intent);
+        finish();
     }
 }

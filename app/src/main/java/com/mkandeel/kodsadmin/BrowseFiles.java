@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import kotlinx.coroutines.channels.Send;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -150,10 +151,7 @@ public class BrowseFiles extends AppCompatActivity implements Frag_one.FragmentI
                             names.add(fragmentsIndx.get(i));
                         }
                         String UUID = connection.getUserID();
-                        uploadFilesToStorage(UUID,names, listGomrok, listFloor,
-                                listHayaa, listFood, listAgri,
-                                listFact, listRelease, listComp, listBill,
-                                listFoodHealth, listAgriOffers, listHealth);
+                        uploadFilesToStorage(UUID,listMap);
                     } else {
                         if (fragment_index <= 11) {
                             fragment_index++;
@@ -432,8 +430,6 @@ public class BrowseFiles extends AppCompatActivity implements Frag_one.FragmentI
         binding.txtChoosen.setText("تم اختيار " + count + " ملفات");
     }
 
-    private int j = 1;
-
     private List<Uri> mergeLists(List<Uri>... lists) {
         List<Uri> newList = new ArrayList<>();
         for (List<Uri> list : lists) {
@@ -442,38 +438,44 @@ public class BrowseFiles extends AppCompatActivity implements Frag_one.FragmentI
         return newList;
     }
 
-    int i;
+    private void uploadFilesToStorage(String userKey, Map<String, List<Uri>> map) {
+        int k = 0;
 
-    private void uploadFilesToStorage(String userKey,List<String> listName, List<Uri>... lists) {
-        i = 0;
-        j = 0;
         StorageReference mReference = sReference.child(mycertificate.getCert_num()
                 + "/");
-        for (List<Uri> list : lists) {
-
-            for (Uri uri : list) {
-                StorageReference sr = mReference.child(listName.get(i) + "/"
-                        +
-                        System.currentTimeMillis() + "." +
+        Log.e("Sizes",map.size()+"");
+        for (Map.Entry<String, List<Uri>> entry : map.entrySet()) {
+            final int[] f = {0};
+            for (Uri uri:entry.getValue()) {
+                StorageReference sr = mReference.child(entry.getKey() + "/"
+                        + System.currentTimeMillis() + "." +
                         Tools.getFileExtn(BrowseFiles.this, uri));
+
+                int finalK = k;
+
                 sr.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        j++;
-                        if (i == lists.length && j == list.size()) {
-                            Modal model = new
-                                    Modal(userKey,mycertificate.getCert_num(),
-                                    mycertificate.getCert_date(),mycertificate.getComp_name(),
-                                    mycertificate.getComp_num(),mycertificate.getCountry(),
-                                    mycertificate.getTrans(),mycertificate.isModel_13(),
-                                    mycertificate.isChk_fact(),mycertificate.getOffers());
-                            uploadDataToRTDB(model);
+                        Modal model = new
+                                Modal(userKey,mycertificate.getCert_num(),
+                                mycertificate.getCert_date(),mycertificate.getComp_name(),
+                                mycertificate.getComp_num(),mycertificate.getCountry(),
+                                mycertificate.getTrans(),mycertificate.isModel_13(),
+                                mycertificate.isChk_fact(),mycertificate.getOffers());
+                        uploadDataToRTDB(model);
+                        f[0]++;
+                        Log.e("Sizes I and J", finalK +"\t"+ f[0]);
+                        Log.e("Sizes List",entry.getValue().size()+"");
+                        if (finalK == map.size()-1 && f[0] == entry.getValue().size()) {
                             SendMsg();
+                            Toast.makeText(BrowseFiles.this, "تم رفع الملفات بنجاح", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
             }
-            i++;
+            k++;
+
         }
     }
 

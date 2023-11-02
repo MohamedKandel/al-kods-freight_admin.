@@ -20,6 +20,9 @@
         android:theme="@style/Theme.KodsAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".DownloadFiles"
+            android:exported="false" />
+        <activity
             android:name=".AddCert"
             android:exported="false" />
         <activity
@@ -65,8 +68,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notif" />
-
-
     </application>
 
 </manifest>
