@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,9 @@ import com.mkandeel.kodsadmin.rvAdapter.DownloadAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -50,14 +53,18 @@ public class DownloadFiles extends AppCompatActivity {
     private FirebaseListener flistener;
     private static final int STORAGE_PERMISSION_CODE = 1;
     private Intent myIntent;
+    private Map<String, String> dictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDownloadFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        hideAndShow(true);
 
         FillList();
+        FillMap();
+
         cert_num = getIntent().getExtras().getString("cert_num");
         final String[] folderName = {""};
         listener = new ClickListener() {
@@ -65,43 +72,43 @@ public class DownloadFiles extends AppCompatActivity {
             public void click(int index) {
                 switch (index) {
                     case 0:
-                        folderName[0] = "ايصالات الجمرك";
+                        folderName[0] = "Gomrok";
                         break;
                     case 1:
-                        folderName[0] = "ايصالات الارضية";
+                        folderName[0] = "Floor";
                         break;
                     case 2:
-                        folderName[0] = "ايصالات الهيئة";
+                        folderName[0] = "Hayaa";
                         break;
                     case 3:
-                        folderName[0] = "ايصالات سلامة الغذاء";
+                        folderName[0] = "Food";
                         break;
                     case 4:
-                        folderName[0] = "ايصالات الزراعة";
+                        folderName[0] = "Agri";
                         break;
                     case 5:
-                        folderName[0] = "ايصالات المنشأ";
+                        folderName[0] = "Fact";
                         break;
                     case 6:
-                        folderName[0] = "صور إذن الافراج";
+                        folderName[0] = "Release";
                         break;
                     case 7:
-                        folderName[0] = "صور البوصلة";
+                        folderName[0] = "Comp";
                         break;
                     case 8:
-                        folderName[0] = "صور الفاتورة";
+                        folderName[0] = "Bill";
                         break;
                     case 9:
-                        folderName[0] = "صور عرض سلامة الغذاء";
+                        folderName[0] = "FoodHealth";
                         break;
                     case 10:
-                        folderName[0] = "صور عروض الزراعة";
+                        folderName[0] = "AgriOffers";
                         break;
                     case 11:
-                        folderName[0] = "صور الشهادة الصحية";
+                        folderName[0] = "Health";
                         break;
                     case 12:
-                        folderName[0] = "ملفات أخرى (نموذج 13 و المنشأ)";
+                        folderName[0] = "Other";
                         break;
                 }
                 getFiles(cert_num, folderName[0]);
@@ -111,12 +118,29 @@ public class DownloadFiles extends AppCompatActivity {
         flistener = new FirebaseListener() {
             @Override
             public void onComplete(Set<String> list) {
-                downloadWhenButtonClick(list, folderName[0]);
+                downloadWhenButtonClick(list, dictionary.get(folderName[0]));
             }
         };
 
         adapter = new DownloadAdapter(listener, list);
         binding.rv.setAdapter(adapter);
+    }
+
+    private void FillMap() {
+        dictionary = new LinkedHashMap<>();
+        dictionary.put("Gomrok", "ايصالات الجمرك");
+        dictionary.put("Agri", "ايصالات الزراعة");
+        dictionary.put("Hayaa", "ايصالات الهيئة");
+        dictionary.put("AgriOffers", "صور عروض الزراعة");
+        dictionary.put("Bill", "صور الفاتورة");
+        dictionary.put("Comp", "صور البوصلة");
+        dictionary.put("Fact", "ايصالات المنشأ");
+        dictionary.put("Floor", "ايصالات الارضية");
+        dictionary.put("Food", "ايصالات سلامة الغذاء");
+        dictionary.put("FoodHealth", "صور عرض سلامة الغذاء");
+        dictionary.put("Health", "صور الشهادة الصحية");
+        dictionary.put("Release", "صور إذن الافراج");
+        dictionary.put("Other", "ملفات أخرى (نموذج 13 و المنشأ)");
     }
 
     private void getFiles(String cert_num, String folderName) {
@@ -187,6 +211,7 @@ public class DownloadFiles extends AppCompatActivity {
             // your code
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                hideAndShow(true);
                 Toast.makeText(ctxt, "تم تحميل الملفات بنجاح", Toast.LENGTH_SHORT)
                         .show();
             } else if (DownloadManager.ACTION_NOTIFICATION_CLICKED.equals(action)) {
@@ -260,17 +285,33 @@ public class DownloadFiles extends AppCompatActivity {
 
     private void downloadWhenButtonClick(Set<String> urls, String folderName) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            hideAndShow(false);
+
             myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
             DownloadCertFiles(urls, cert_num, folderName);
         } else {
             if (ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED) {
+
+                hideAndShow(false);
+
                 myIntent = registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                 DownloadCertFiles(urls, cert_num, folderName);
             } else {
                 requestStoragePermission();
             }
+        }
+    }
+
+    private void hideAndShow(boolean isHide) {
+        if (isHide) {
+            binding.progress.setVisibility(View.GONE);
+            binding.loading.setVisibility(View.GONE);
+        } else {
+            binding.progress.setVisibility(View.VISIBLE);
+            binding.loading.setVisibility(View.VISIBLE);
         }
     }
 
