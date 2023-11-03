@@ -7,17 +7,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,15 +31,11 @@ import com.mkandeel.kodsadmin.models.Cert;
 import com.mkandeel.kodsadmin.models.Modal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import kotlinx.coroutines.channels.Send;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -475,7 +467,6 @@ public class BrowseFiles extends AppCompatActivity implements Frag_one.FragmentI
 
             }
             k++;
-
         }
     }
 

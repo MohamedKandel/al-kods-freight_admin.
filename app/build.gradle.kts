@@ -63,4 +63,6 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.9.0")
     // okhttp3
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    //sdp and ssp
+    implementation ("com.intuit.ssp:ssp-android:1.1.0")
 }

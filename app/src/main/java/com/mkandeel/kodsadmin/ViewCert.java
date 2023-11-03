@@ -5,10 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +19,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -263,10 +268,11 @@ public class ViewCert extends AppCompatActivity {
                     //Intent mIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     //mIntent.setType("*/*");
                     //mIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    addModelOrFact = false;
+                    Intent intent = new Intent(ViewCert.this,UploadExtras.class);
+                    intent.putExtra("cert_num",mystr);
+                    startActivity(intent);
+                    finish();
                     //arl.launch(mIntent);
-                } else {
-                    //deleteCertByNum(str,index);
                 }
             }
         });
